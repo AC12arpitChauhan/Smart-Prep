@@ -118,12 +118,21 @@ const Agent = ({
     setCallStatus(CallStatus.CONNECTING);
 
     if (type === "generate") {
-      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+      // Migration to Squads (or Assistant via Dashboard).
+      // Vapi SDK signature: start(assistant?, assistantOverrides?, squad?)
+      
+      // If you are using a single Assistant built in the dashboard:
+      // await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!, {
+      //   variableValues: { username: userName, userid: userId },
+      // });
+
+      // If you are using a unified Squad built in the dashboard, pass it as the 3rd parameter:
+      await vapi.start(undefined, {
         variableValues: {
           username: userName,
           userid: userId,
         },
-      });
+      }, process.env.NEXT_PUBLIC_VAPI_SQUAD_ID!);
     } else {
       let formattedQuestions = "";
       if (questions) {
