@@ -3,9 +3,27 @@ import { google } from "@ai-sdk/google";
 
 import { db } from "@/firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
-  const { type, role, level, techstack, amount, userid } = await request.json();
+  const body = await request.json();
+  
+  // Robust extraction: Check if Vapi sent a formal tool-calls webhook payload
+  let args = body;
+  if (body.message?.type === "tool-calls") {
+    const toolCall = body.message.toolWithToolCallList?.[0]?.toolCall;
+    if (toolCall?.function?.arguments) {
+      args = toolCall.function.arguments;
+    }
+  }
+
+  // Fallback to flat params safely
+  const type = args.type || "Technical";
+  const role = args.role || "Developer";
+  const level = args.level || "Junior";
+  const techstack = args.techstack || "React";
+  const amount = args.amount || "3";
+  const userid = args.userid || args.userId || "anonymous";
 
   try {
     const { text: questions } = await generateText({
@@ -38,6 +56,9 @@ export async function POST(request: Request) {
     };
 
     await db.collection("interviews").add(interview);
+    
+    // Purge frontend cache so new interview shows instantly on redirect
+    revalidatePath("/");
 
     return Response.json({ success: true }, { status: 200 });
   } catch (error) {
