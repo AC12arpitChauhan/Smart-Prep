@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   const body = await request.json();
+
+  console.log("FULL BODY FROM VAPI:", JSON.stringify(body, null, 2));
   
   // Robust extraction: Check if Vapi sent a formal tool-calls webhook payload
   let args = body;
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
 
   try {
     const { text: questions } = await generateText({
-      model: google("gemini-2.0-flash-001"),
+      model: google("gemini-2.5-flash"),
       prompt: `Prepare questions for a job interview.
         The job role is ${role}.
         The job experience level is ${level}.
