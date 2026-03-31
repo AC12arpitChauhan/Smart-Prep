@@ -118,14 +118,17 @@ const Agent = ({
     setCallStatus(CallStatus.CONNECTING);
 
     if (type === "generate") {
-      await vapi.start({
-      squadId: process.env.NEXT_PUBLIC_VAPI_SQUAD_ID!,
-      variableValues: {
-        username: userName,
-        userid: userId,
-      },
-    });
-} else {
+      await vapi.start(
+        undefined,
+        {
+          variableValues: {
+            username: userName,
+            userid: userId,
+          },
+        },
+        process.env.NEXT_PUBLIC_VAPI_SQUAD_ID!
+      );
+    } else {
       let formattedQuestions = "";
       if (questions) {
         formattedQuestions = questions
