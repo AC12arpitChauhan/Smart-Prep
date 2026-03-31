@@ -118,6 +118,7 @@ const Agent = ({
     setCallStatus(CallStatus.CONNECTING);
 
     if (type === "generate") {
+      // @ts-ignore
       await vapi.start({
         squadId: process.env.NEXT_PUBLIC_VAPI_SQUAD_ID!,
         variableValues: {
