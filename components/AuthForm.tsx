@@ -98,19 +98,25 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const isSignIn = type === "sign-in";
 
   return (
-    <div className="card-border lg:min-w-[566px]">
-      <div className="flex flex-col gap-6 card py-14 px-10">
-        <div className="flex flex-row gap-2 justify-center">
-          <Image src="/logo.svg" alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">PrepWise</h2>
+    <div className="w-full max-w-md">
+      <div className="bg-white rounded-lg border border-slate-200 shadow-sm flex flex-col gap-6 py-10 px-8">
+        {/* Header */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
+            <Image src="/logo.svg" alt="logo" height={28} width={32} />
+            <span className="text-xl font-bold text-text-primary">
+              PrepWise
+            </span>
+          </div>
+          <p className="text-sm text-text-muted">
+            Practice job interviews with AI
+          </p>
         </div>
-
-        <h3>Practice job interviews with AI</h3>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full space-y-6 mt-4 form"
+            className="w-full space-y-5 form"
           >
             {!isSignIn && (
               <FormField
@@ -144,11 +150,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
           </form>
         </Form>
 
-        <p className="text-center">
+        <p className="text-center text-sm text-text-muted">
           {isSignIn ? "No account yet?" : "Have an account already?"}
           <Link
             href={!isSignIn ? "/sign-in" : "/sign-up"}
-            className="font-bold text-user-primary ml-1"
+            className="font-semibold text-primary ml-1 hover:underline"
           >
             {!isSignIn ? "Sign In" : "Sign Up"}
           </Link>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
@@ -23,29 +22,22 @@ async function Home() {
 
   return (
     <>
-      <section className="card-cta">
-        <div className="flex flex-col gap-6 max-w-lg">
-          <h2>Get Interview-Ready with AI-Powered Practice & Feedback</h2>
-          <p className="text-lg">
-            Practice real interview questions & get instant feedback
+      {/* Start Interview Section */}
+      <section className="card-clean flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2>Welcome back{user?.name ? `, ${user.name}` : ""}</h2>
+          <p className="mt-1">
+            Start a new mock interview or review your past sessions.
           </p>
-
-          <Button asChild className="btn-primary max-sm:w-full">
-            <Link href="/interview">Start an Interview</Link>
-          </Button>
         </div>
-
-        <Image
-          src="/robot.png"
-          alt="robo-dude"
-          width={400}
-          height={400}
-          className="max-sm:hidden"
-        />
+        <Button asChild className="btn-primary shrink-0">
+          <Link href="/interview">Start New Interview</Link>
+        </Button>
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
-        <h2>Your Interviews</h2>
+      {/* Your Interviews */}
+      <section className="flex flex-col gap-4">
+        <h3>Your Interviews</h3>
 
         <div className="interviews-section">
           {hasPastInterviews ? (
@@ -61,13 +53,18 @@ async function Home() {
               />
             ))
           ) : (
-            <p>You haven&apos;t taken any interviews yet</p>
+            <div className="card-clean text-center py-12 col-span-full">
+              <p className="text-text-muted">
+                You haven&apos;t taken any interviews yet. Start one above!
+              </p>
+            </div>
           )}
         </div>
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
-        <h2>Take Interviews</h2>
+      {/* Available Interviews */}
+      <section className="flex flex-col gap-4">
+        <h3>Available Interviews</h3>
 
         <div className="interviews-section">
           {hasUpcomingInterviews ? (
@@ -83,7 +80,11 @@ async function Home() {
               />
             ))
           ) : (
-            <p>There are no interviews available</p>
+            <div className="card-clean text-center py-12 col-span-full">
+              <p className="text-text-muted">
+                No interviews available at the moment.
+              </p>
+            </div>
           )}
         </div>
       </section>

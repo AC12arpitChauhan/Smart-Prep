@@ -6,12 +6,16 @@ const Page = async () => {
 
   return (
     <>
-      <h3>Interview generation</h3>
+      <div className="card-clean">
+        <h2>Generate Interview</h2>
+        <p className="mt-1">
+          Talk to our AI assistant to set up a personalized mock interview.
+        </p>
+      </div>
 
       <Agent
         userName={user?.name!}
         userId={user?.id}
-        profileImage={user?.profileURL}
         type="generate"
       />
     </>

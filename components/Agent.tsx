@@ -157,7 +157,7 @@ const Agent = ({
           <div className="avatar">
             <Image
               src="/ai-avatar.png"
-              alt="profile-image"
+              alt="AI Interviewer"
               width={65}
               height={54}
               className="object-cover"
@@ -172,12 +172,12 @@ const Agent = ({
           <div className="card-content">
             <Image
               src="/user-avatar.png"
-              alt="profile-image"
+              alt="Your profile"
               width={539}
               height={539}
               className="rounded-full object-cover size-[120px]"
             />
-            <h3>{userName}</h3>
+            <h3 style={{ color: '#0f172a' }}>{userName}</h3>
           </div>
         </div>
       </div>
@@ -210,13 +210,16 @@ const Agent = ({
 
             <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                ? "Call"
-                : ". . ."}
+                ? "Start Call"
+                : "Connecting..."}
             </span>
           </button>
         ) : (
-          <button className="btn-disconnect" onClick={() => handleDisconnect()}>
-            End
+          <button
+            className="btn-disconnect"
+            onClick={() => handleDisconnect()}
+          >
+            End Call
           </button>
         )}
       </div>

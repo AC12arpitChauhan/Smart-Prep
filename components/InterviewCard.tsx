@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import Link from "next/link";
-import Image from "next/image";
 
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 import DisplayTechIcons from "./DisplayTechIcons";
 
-import { cn, getRandomInterviewCover } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
 
 const InterviewCard = async ({
@@ -26,84 +26,77 @@ const InterviewCard = async ({
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
-  const badgeColor =
+  const badgeClass =
     {
-      Behavioral: "bg-light-400",
-      Mixed: "bg-light-600",
-      Technical: "bg-light-800",
-    }[normalizedType] || "bg-light-600";
+      Behavioral: "badge-behavioral",
+      Mixed: "badge-mixed",
+      Technical: "badge-technical",
+    }[normalizedType] || "badge-mixed";
 
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
+  const score = feedback?.totalScore;
+
+  const scoreColor = score
+    ? score >= 80
+      ? "score-excellent"
+      : score >= 60
+        ? "score-good"
+        : score >= 40
+          ? "score-average"
+          : "score-poor"
+    : "";
+
   return (
-    <div className="card-border w-[360px] max-sm:w-full min-h-96">
-      <div className="card-interview">
-        <div>
-          {/* Type Badge */}
-          <div
-            className={cn(
-              "absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg",
-              badgeColor
-            )}
-          >
-            <p className="badge-text ">{normalizedType}</p>
-          </div>
-
-          {/* Cover Image */}
-          <Image
-            src={getRandomInterviewCover()}
-            alt="cover-image"
-            width={90}
-            height={90}
-            className="rounded-full object-fit size-[90px]"
-          />
-
-          {/* Interview Role */}
-          <h3 className="mt-5 capitalize">{role} Interview</h3>
-
-          {/* Date & Score */}
-          <div className="flex flex-row gap-5 mt-3">
-            <div className="flex flex-row gap-2">
-              <Image
-                src="/calendar.svg"
-                width={22}
-                height={22}
-                alt="calendar"
-              />
-              <p>{formattedDate}</p>
-            </div>
-
-            <div className="flex flex-row gap-2 items-center">
-              <Image src="/star.svg" width={22} height={22} alt="star" />
-              <p>{feedback?.totalScore || "---"}/100</p>
-            </div>
-          </div>
-
-          {/* Feedback or Placeholder Text */}
-          <p className="line-clamp-2 mt-5">
-            {feedback?.finalAssessment ||
-              "You haven't taken this interview yet. Take it now to improve your skills."}
-          </p>
+    <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm transition-all hover:shadow-md hover:border-slate-300 flex flex-col justify-between gap-5 min-h-[230px]">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <h3 className="text-lg capitalize">{role}</h3>
+          <p className="text-sm text-text-muted mt-1">{formattedDate}</p>
         </div>
+        <Badge variant="outline" className={cn("text-xs capitalize", badgeClass)}>
+          {normalizedType}
+        </Badge>
+      </div>
 
-        <div className="flex flex-row justify-between">
-          <DisplayTechIcons techStack={techstack} />
+      {/* Score + Tech */}
+      <div className="flex items-center justify-between">
+        <DisplayTechIcons techStack={techstack} />
 
-          <Button className="btn-primary">
-            <Link
-              href={
-                feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
-              }
-            >
-              {feedback ? "Check Feedback" : "View Interview"}
-            </Link>
-          </Button>
+        <div className="flex items-center gap-2">
+          {score ? (
+            <span className={cn("text-lg font-bold", scoreColor)}>
+              {score}
+              <span className="text-sm font-normal text-text-muted">/100</span>
+            </span>
+          ) : (
+            <span className="text-sm text-text-muted">Not taken</span>
+          )}
         </div>
       </div>
+
+      {/* CTA */}
+      <Button
+        asChild
+        variant={feedback ? "outline" : "default"}
+        className={cn(
+          "w-full",
+          !feedback && "bg-primary text-white hover:bg-primary-dark"
+        )}
+      >
+        <Link
+          href={
+            feedback
+              ? `/interview/${interviewId}/feedback`
+              : `/interview/${interviewId}`
+          }
+        >
+          {feedback ? "View Feedback" : "Take Interview"}
+        </Link>
+      </Button>
     </div>
   );
 };
