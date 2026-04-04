@@ -14,7 +14,6 @@ import DisplayTechIcons from "./DisplayTechIcons";
 import { cn } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
 
-// Helper to generate a consistent gradient based on role
 const getRoleGradient = (role: string) => {
   const roleLower = role.toLowerCase();
   if (roleLower.includes("front")) return "bg-linear-to-br from-orange-400 to-amber-500";
@@ -67,7 +66,6 @@ const InterviewCard = async ({
 
   return (
     <Card className="flex flex-col h-full border-slate-200 hover:shadow-lg transition-all group overflow-hidden">
-      {/* Visual Header / "Image" substitute */}
       <div className={cn("h-28 w-full transition-transform group-hover:scale-105 duration-500 flex items-center justify-center overflow-hidden relative px-4", getRoleGradient(role))}>
         <div className="absolute inset-0 bg-black/5" />
         <span className="text-white/20 text-4xl font-black uppercase tracking-tighter select-none truncate text-center w-full">

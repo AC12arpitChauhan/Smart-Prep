@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   console.log("FULL BODY FROM VAPI:", JSON.stringify(body, null, 2));
 
-  // apiRequest tool sends your configured body directly — no envelope
+
   const type = body.type || "Technical";
   const role = body.role || "Developer";
   const level = body.level || "Junior";
@@ -47,12 +47,12 @@ export async function POST(request: Request) {
     await db.collection("interviews").add(interview);
     revalidatePath("/");
 
-    // apiRequest only needs HTTP 200 + any valid JSON
+
     return Response.json({ success: true, message: "Interview generated successfully." }, { status: 200 });
 
   } catch (error) {
     console.error("Error:", error);
-    // Still return 200 — Vapi ignores non-200 responses entirely
+
     return Response.json({ success: false, message: "Failed to generate interview." }, { status: 200 });
   }
 }

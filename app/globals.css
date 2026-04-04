@@ -2,29 +2,24 @@
 
 @plugin "tailwindcss-animate";
 
-/* Force class-based dark mode so OS dark mode doesn't leak into components */
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* brand colors */
   --color-primary: #f97316;
   --color-primary-light: #fb923c;
   --color-primary-dark: #ea580c;
   --color-primary-50: #fff7ed;
   --color-primary-100: #ffedd5;
 
-  /* text */
   --color-text-primary: #0f172a;
   --color-text-secondary: #1e293b;
   --color-text-muted: #94a3b8;
 
-  /* surfaces */
   --color-bg: #f8fafc;
   --color-card: #ffffff;
   --color-border: #e2e8f0;
   --color-border-light: #f1f5f9;
 
-  /* status */
   --color-success: #16a34a;
   --color-success-light: #dcfce7;
   --color-destructive: #dc2626;
@@ -108,7 +103,6 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* ─── Base ─── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -144,9 +138,7 @@
   }
 }
 
-/* ─── Components ─── */
 @layer components {
-  /* Layouts */
   .auth-layout {
     @apply flex items-center justify-center mx-auto max-w-7xl min-h-screen px-4 py-8;
   }
@@ -155,7 +147,6 @@
     @apply flex mx-auto max-w-7xl flex-col gap-8 my-8 px-6 max-sm:px-4;
   }
 
-  /* Cards */
   .card-clean {
     @apply bg-white rounded-lg border border-slate-200 p-6 shadow-sm;
   }
@@ -164,7 +155,6 @@
     @apply bg-white rounded-lg border border-slate-200 p-6 shadow-sm transition-all hover:shadow-md hover:border-slate-300 min-h-[220px];
   }
 
-  /* Auth form */
   .form {
     @apply w-full;
 
@@ -181,7 +171,6 @@
     }
   }
 
-  /* Buttons */
   .btn-primary {
     @apply bg-primary text-white hover:bg-primary-dark rounded-lg font-semibold px-5 py-2.5 cursor-pointer transition-colors text-sm;
   }
@@ -198,7 +187,6 @@
     @apply inline-flex items-center justify-center px-8 py-3 text-sm font-semibold text-white transition-colors bg-destructive border border-transparent rounded-lg cursor-pointer hover:bg-red-700 min-w-28;
   }
 
-  /* Interview call view */
   .call-view {
     @apply flex sm:flex-row flex-col gap-6 items-center justify-between w-full;
 
@@ -231,7 +219,6 @@
     }
   }
 
-  /* Transcript */
   .transcript-border {
     @apply w-full;
 
@@ -246,7 +233,6 @@
     }
   }
 
-  /* Feedback */
   .section-feedback {
     @apply flex flex-col gap-8 max-w-6xl mx-auto max-sm:px-4 text-base leading-7;
 
@@ -255,17 +241,14 @@
     }
   }
 
-  /* Interview cards */
   .interviews-section {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full;
   }
 
-  /* Tech icons */
   .tech-tooltip {
     @apply absolute bottom-full mb-1 hidden px-2 py-1 text-xs text-white bg-slate-700 rounded shadow-sm whitespace-nowrap;
   }
 
-  /* Badge styles */
   .badge-behavioral {
     @apply bg-orange-50 text-orange-700 border-orange-200;
   }
@@ -278,7 +261,6 @@
     @apply bg-amber-50 text-amber-700 border-amber-200;
   }
 
-  /* Score colors */
   .score-excellent {
     @apply text-green-600;
   }
@@ -296,7 +278,6 @@
   }
 }
 
-/* ─── Utilities ─── */
 @utility flex-center {
   @apply flex items-center justify-center;
 }

@@ -48,7 +48,7 @@ const Feedback = async ({ params }: RouteParams) => {
 
   return (
     <section className="section-feedback">
-      {/* Page Header */}
+      {}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h1 className="capitalize">Feedback for {interview.role} Interview</h1>
@@ -68,7 +68,7 @@ const Feedback = async ({ params }: RouteParams) => {
 
       <Separator />
 
-      {/* Overall Evaluation — Full Width */}
+      {}
       <div className="card-clean">
         <h3 className="mb-3">Overall Evaluation</h3>
         <p className="text-text-secondary leading-relaxed">
@@ -76,9 +76,9 @@ const Feedback = async ({ params }: RouteParams) => {
         </p>
       </div>
 
-      {/* Radar Chart + Scorecard side by side */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-        {/* Radar Chart (65%) */}
+        {}
         <div className="lg:col-span-7">
           <div className="card-clean h-full">
             <h3 className="mb-4">Performance Overview</h3>
@@ -90,12 +90,12 @@ const Feedback = async ({ params }: RouteParams) => {
           </div>
         </div>
 
-        {/* Scorecard (35%) */}
+        {}
         <div className="lg:col-span-3">
           <div className="card-clean h-full">
             <h3 className="mb-4">Scorecard</h3>
 
-            {/* Overall Score */}
+            {}
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center size-24 rounded-full border-4 border-primary/20 bg-primary-50">
                 <span className="text-3xl font-bold text-primary">
@@ -107,7 +107,7 @@ const Feedback = async ({ params }: RouteParams) => {
 
             <Separator className="mb-4" />
 
-            {/* Category Progress Bars */}
+            {}
             <div className="space-y-4">
               {feedback?.categoryScores?.map((category, index) => (
                 <ScoreProgressBar
@@ -121,9 +121,9 @@ const Feedback = async ({ params }: RouteParams) => {
         </div>
       </div>
 
-      {/* Strengths & Weaknesses — Full Width */}
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Strengths */}
+        {}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden flex">
           <div className="w-1 bg-green-500 shrink-0" />
           <div className="p-6 flex-1">
@@ -157,7 +157,7 @@ const Feedback = async ({ params }: RouteParams) => {
           </div>
         </div>
 
-        {/* Areas for Improvement */}
+        {}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden flex">
           <div className="w-1 bg-amber-500 shrink-0" />
           <div className="p-6 flex-1">
@@ -192,7 +192,7 @@ const Feedback = async ({ params }: RouteParams) => {
         </div>
       </div>
 
-      {/* Detailed Breakdown Accordion */}
+      {}
       <div className="card-clean">
         <h3 className="mb-4">Detailed Category Breakdown</h3>
         {feedback?.categoryScores && (
@@ -200,7 +200,7 @@ const Feedback = async ({ params }: RouteParams) => {
         )}
       </div>
 
-      {/* Action Buttons */}
+      {}
       <div className="buttons">
         <Button asChild variant="outline" className="min-w-40">
           <Link href="/">Back to Dashboard</Link>

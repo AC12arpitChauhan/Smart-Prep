@@ -152,7 +152,7 @@ const Agent = ({
   return (
     <>
       <div className="call-view">
-        {/* AI Interviewer Card */}
+        {}
         <div className="card-interviewer">
           <div className="avatar">
             <Image
@@ -167,7 +167,7 @@ const Agent = ({
           <h3>AI Interviewer</h3>
         </div>
 
-        {/* User Profile Card */}
+        {}
         <div className="card-border">
           <div className="card-content">
             <Image

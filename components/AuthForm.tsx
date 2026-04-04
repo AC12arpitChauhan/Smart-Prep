@@ -100,7 +100,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   return (
     <div className="w-full max-w-md">
       <div className="bg-white rounded-lg border border-slate-200 shadow-sm flex flex-col gap-6 py-10 px-8">
-        {/* Header */}
+        {}
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center gap-2">
             <Image src="/logo.svg" alt="logo" height={28} width={32} />

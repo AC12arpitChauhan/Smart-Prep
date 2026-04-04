@@ -1,10 +1,8 @@
 import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import InterviewCard from "@/components/InterviewCard";
-
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
   getInterviewsByUserId,
@@ -24,7 +22,6 @@ async function Home() {
 
   return (
     <>
-      {/* Start Interview Section */}
       <Card className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 border-slate-200 bg-linear-to-r from-white to-orange-50/30">
         <div className="space-y-2">
           <h1 className="text-3xl font-black text-text-primary">
@@ -41,7 +38,6 @@ async function Home() {
 
       <Separator />
 
-      {/* Your Interviews */}
       <section className="flex flex-col gap-4">
         <h3>Your Interviews</h3>
 
@@ -68,7 +64,6 @@ async function Home() {
         </div>
       </section>
 
-      {/* Available Interviews */}
       <section className="flex flex-col gap-4">
         <h3>Available Interviews</h3>
 
