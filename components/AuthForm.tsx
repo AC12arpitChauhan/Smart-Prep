@@ -105,11 +105,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
           <div className="flex items-center gap-2">
             <Image src="/logo.svg" alt="logo" height={28} width={32} />
             <span className="text-xl font-bold text-text-primary">
-              PrepWise
+              InterviewPrep AI
             </span>
           </div>
           <p className="text-sm text-text-muted">
-            Practice job interviews with AI
+            Intelligent Mock Interview Platform
           </p>
         </div>
 

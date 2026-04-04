@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import InterviewCard from "@/components/InterviewCard";
 
 import { getCurrentUser } from "@/lib/actions/auth.action";
@@ -23,17 +25,21 @@ async function Home() {
   return (
     <>
       {/* Start Interview Section */}
-      <section className="card-clean flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h2>Welcome back{user?.name ? `, ${user.name}` : ""}</h2>
-          <p className="mt-1">
-            Start a new mock interview or review your past sessions.
+      <Card className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 border-slate-200 bg-linear-to-r from-white to-orange-50/30">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-black text-text-primary">
+            Welcome back{user?.name ? `, ${user.name}` : ""}
+          </h1>
+          <p className="text-text-secondary text-base font-medium max-w-md">
+            Your intelligent command center for mastering role-specific mock interviews.
           </p>
         </div>
-        <Button asChild className="btn-primary shrink-0">
-          <Link href="/interview">Start New Interview</Link>
+        <Button asChild size="lg" className="rounded-full shadow-lg shadow-orange-100 font-bold px-8 h-12 text-base transition-all hover:scale-105 active:scale-95">
+          <Link href="/interview">Ready to prep?</Link>
         </Button>
-      </section>
+      </Card>
+
+      <Separator />
 
       {/* Your Interviews */}
       <section className="flex flex-col gap-4">

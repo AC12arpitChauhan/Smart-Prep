@@ -51,7 +51,7 @@ const Feedback = async ({ params }: RouteParams) => {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h1 className="capitalize">{interview.role} — Interview Feedback</h1>
+          <h1 className="capitalize">Feedback for {interview.role} Interview</h1>
           <p className="text-sm text-text-muted mt-1">
             {feedback?.createdAt
               ? dayjs(feedback.createdAt).format("MMMM D, YYYY · h:mm A")

@@ -11,12 +11,14 @@ const DisplayTechIcons = async ({ techStack }: TechIconProps) => {
         <div
           key={tech}
           className={cn(
-            "relative group bg-slate-100 border border-border rounded-full p-2 flex flex-center",
+            "relative group/tech bg-slate-100 border border-border rounded-full p-2 flex flex-center transition-all hover:z-20",
             index >= 1 && "-ml-3"
           )}
         >
-          <span className="tech-tooltip">{tech}</span>
-
+          <span className="tech-tooltip left-1/2 -translate-x-1/2 opacity-0 group-hover/tech:opacity-100 group-hover/tech:flex transition-opacity z-50 pointer-events-none">
+            {tech}
+          </span>
+ 
           <Image
             src={url}
             alt={tech}
