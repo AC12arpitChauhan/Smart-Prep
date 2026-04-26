@@ -14,13 +14,41 @@ import DisplayTechIcons from "./DisplayTechIcons";
 import { cn } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
 
+// Warm Autumn Glow palette for card headers
+// Bronze Spice #CC5803 | Autumn Leaf #E2711D | Deep Saffron #FF9505
+// Amber Flame #FFB627 | Sunflower Gold #FFC971
+const CARD_GRADIENTS = [
+  "bg-linear-to-br from-[#CC5803] to-[#E2711D]",   // Bronze → Autumn
+  "bg-linear-to-br from-[#E2711D] to-[#FF9505]",   // Autumn → Saffron
+  "bg-linear-to-br from-[#FF9505] to-[#FFB627]",   // Saffron → Amber
+  "bg-linear-to-br from-[#FFB627] to-[#FFC971]",   // Amber → Gold
+  "bg-linear-to-br from-[#CC5803] to-[#FF9505]",   // Bronze → Saffron
+  "bg-linear-to-br from-[#E2711D] to-[#FFB627]",   // Autumn → Amber
+  "bg-linear-to-br from-[#CC5803] to-[#FFB627]",   // Bronze → Amber
+  "bg-linear-to-br from-[#E2711D] to-[#FFC971]",   // Autumn → Gold
+] as const;
+
 const getRoleGradient = (role: string) => {
   const roleLower = role.toLowerCase();
-  if (roleLower.includes("front")) return "bg-linear-to-br from-orange-400 to-amber-500";
-  if (roleLower.includes("back")) return "bg-linear-to-br from-orange-600 to-orange-400";
-  if (roleLower.includes("devops")) return "bg-linear-to-br from-slate-700 to-slate-500";
-  if (roleLower.includes("full")) return "bg-linear-to-br from-orange-500 to-rose-400";
-  return "bg-linear-to-br from-orange-400 to-amber-300";
+
+  if (roleLower.includes("front"))     return CARD_GRADIENTS[0]; // Bronze → Autumn
+  if (roleLower.includes("back"))      return CARD_GRADIENTS[1]; // Autumn → Saffron
+  if (roleLower.includes("full"))      return CARD_GRADIENTS[2]; // Saffron → Amber
+  if (roleLower.includes("devops"))    return CARD_GRADIENTS[3]; // Amber → Gold
+  if (roleLower.includes("data"))      return CARD_GRADIENTS[4]; // Bronze → Saffron
+  if (roleLower.includes("machine") || roleLower.includes("ml") || roleLower.includes("ai"))
+    return CARD_GRADIENTS[5]; // Autumn → Amber
+  if (roleLower.includes("design") || roleLower.includes("ui") || roleLower.includes("ux"))
+    return CARD_GRADIENTS[6]; // Bronze → Amber
+  if (roleLower.includes("mobile") || roleLower.includes("android") || roleLower.includes("ios"))
+    return CARD_GRADIENTS[7]; // Autumn → Gold
+
+  // Deterministic hash fallback
+  let hash = 0;
+  for (let i = 0; i < role.length; i++) {
+    hash = role.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return CARD_GRADIENTS[Math.abs(hash) % CARD_GRADIENTS.length];
 };
 
 const InterviewCard = async ({

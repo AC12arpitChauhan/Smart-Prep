@@ -97,3 +97,19 @@ interface InterviewFormProps {
 interface TechIconProps {
   techStack: string[];
 }
+
+interface JDExtractionResult {
+  role: string;
+  level: string;
+  techstack: string;
+  type: string;
+}
+
+interface GenerateInterviewParams {
+  role: string;
+  level: string;
+  techstack: string;
+  type: string;
+  amount: number;
+  userid: string;
+}

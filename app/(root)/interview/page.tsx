@@ -1,4 +1,5 @@
 import Agent from "@/components/Agent";
+import InterviewGenerator from "@/components/InterviewGenerator";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 
 const Page = async () => {
@@ -9,15 +10,14 @@ const Page = async () => {
       <div className="card-clean">
         <h2>Generate Interview</h2>
         <p className="mt-1">
-          Talk to our AI assistant to set up a personalized mock interview.
+          Set up a personalized mock interview — talk to AI, fill a form, or
+          paste a job description.
         </p>
       </div>
 
-      <Agent
-        userName={user?.name!}
-        userId={user?.id}
-        type="generate"
-      />
+      <InterviewGenerator userName={user?.name!} userId={user?.id!}>
+        <Agent userName={user?.name!} userId={user?.id} type="generate" />
+      </InterviewGenerator>
     </>
   );
 };

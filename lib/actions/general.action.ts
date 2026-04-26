@@ -1,10 +1,12 @@
 "use server";
 
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
 import { google } from "@ai-sdk/google";
+import { z } from "zod";
 
 import { db } from "@/firebase/admin";
 import { feedbackSchema } from "@/constants";
+import { getRandomInterviewCover } from "@/lib/utils";
 
 export async function createFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript, feedbackId } = params;
@@ -128,3 +130,83 @@ export async function getInterviewsByUserId(
     ...doc.data(),
   })) as Interview[];
 }
+
+export async function extractJobDescription(
+  jdText: string
+): Promise<JDExtractionResult> {
+  const { object } = await generateObject({
+    model: google("gemini-2.5-flash", { structuredOutputs: false }),
+    schema: z.object({
+      role: z
+        .string()
+        .describe(
+          "The job title/role, e.g. 'Frontend Developer', 'Data Scientist'"
+        ),
+      level: z
+        .enum(["Junior", "Mid", "Senior"])
+        .describe("The experience level required"),
+      techstack: z
+        .string()
+        .describe(
+          "Comma-separated list of key technologies/skills mentioned, e.g. 'React, TypeScript, Next.js'"
+        ),
+      type: z
+        .enum(["Technical", "Behavioral", "Mixed"])
+        .describe(
+          "Whether the interview should focus on technical skills, behavioral questions, or a mix. Decide based on the job description emphasis."
+        ),
+    }),
+    prompt: `Analyze the following job description and extract structured interview parameters from it.
+If the job description is vague or missing details, make reasonable inferences based on context.
+
+Job Description:
+${jdText}`,
+    system:
+      "You are an expert HR analyst. Extract the role, experience level, tech stack, and recommended interview type from job descriptions. Be concise and accurate.",
+  });
+
+  return object;
+}
+
+export async function generateInterviewFromForm(
+  params: GenerateInterviewParams
+) {
+  const { role, level, techstack, type, amount, userid } = params;
+
+  try {
+    const { text: questions } = await generateText({
+      model: google("gemini-2.5-flash"),
+      prompt: `Prepare questions for a job interview.
+        The job role is ${role}.
+        The job experience level is ${level}.
+        The tech stack used in the job is: ${techstack}.
+        The focus between behavioural and technical questions should lean towards: ${type}.
+        The amount of questions required is: ${amount}.
+        Please return only the questions, without any additional text.
+        The questions are going to be read by a voice assistant so do not use "/" or "*" or any other special characters which might break the voice assistant.
+        Return the questions formatted like this:
+        ["Question 1", "Question 2", "Question 3"]
+        Thank you! <3`,
+    });
+
+    const interview = {
+      role,
+      type,
+      level,
+      techstack: techstack.split(",").map((s: string) => s.trim()),
+      questions: JSON.parse(questions),
+      userId: userid,
+      finalized: true,
+      coverImage: getRandomInterviewCover(),
+      createdAt: new Date().toISOString(),
+    };
+
+    const docRef = await db.collection("interviews").add(interview);
+
+    return { success: true, interviewId: docRef.id };
+  } catch (error) {
+    console.error("Error generating interview from form:", error);
+    return { success: false, interviewId: null };
+  }
+}
+
