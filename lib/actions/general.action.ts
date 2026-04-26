@@ -131,6 +131,42 @@ export async function getInterviewsByUserId(
   })) as Interview[];
 }
 
+export async function getUserScoreProgress(userId: string) {
+  if (!userId) return [];
+
+  const feedbackSnap = await db
+    .collection("feedback")
+    .where("userId", "==", userId)
+    .get();
+
+  if (feedbackSnap.empty) return [];
+
+  const entries = await Promise.all(
+    feedbackSnap.docs.map(async (doc) => {
+      const data = doc.data();
+      const interviewDoc = await db
+        .collection("interviews")
+        .doc(data.interviewId)
+        .get();
+      const role = interviewDoc.exists
+        ? (interviewDoc.data()?.role as string) || "Interview"
+        : "Interview";
+
+      return {
+        score: data.totalScore as number,
+        date: data.createdAt as string,
+        role,
+      };
+    })
+  );
+
+  entries.sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  return entries;
+}
+
 export async function extractJobDescription(
   jdText: string
 ): Promise<JDExtractionResult> {

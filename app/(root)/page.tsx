@@ -1,18 +1,22 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
+import ProgressChart from "@/components/ProgressChart";
+import TypeDistributionChart from "@/components/TypeDistributionChart";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
   getInterviewsByUserId,
   getLatestInterviews,
+  getUserScoreProgress,
 } from "@/lib/actions/general.action";
 
 async function Home() {
   const user = await getCurrentUser();
 
-  const [userInterviews, allInterview] = await Promise.all([
+  const [userInterviews, allInterview, scoreProgress] = await Promise.all([
     getInterviewsByUserId(user?.id!),
     getLatestInterviews({ userId: user?.id! }),
+    getUserScoreProgress(user?.id!),
   ]);
 
   const hasPastInterviews = userInterviews?.length! > 0;
@@ -45,6 +49,19 @@ async function Home() {
       </div>
 
       <div className="h-px bg-[#e5e7eb]" />
+
+      {hasPastInterviews && (
+        <div className={`grid grid-cols-1 gap-5 ${scoreProgress.length >= 2 ? "lg:grid-cols-10" : ""}`}>
+          {scoreProgress.length >= 2 && (
+            <div className="lg:col-span-7">
+              <ProgressChart data={scoreProgress} />
+            </div>
+          )}
+          <div className={scoreProgress.length >= 2 ? "lg:col-span-3" : ""}>
+            <TypeDistributionChart interviews={userInterviews || []} />
+          </div>
+        </div>
+      )}
 
       <section className="flex flex-col gap-5">
         <div className="flex items-center justify-between">
