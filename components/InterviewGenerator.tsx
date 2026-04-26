@@ -18,7 +18,7 @@ type Step = "input" | "preview";
 interface InterviewGeneratorProps {
   userName: string;
   userId: string;
-  children: React.ReactNode; // The existing Agent component for voice mode
+  children: React.ReactNode;
 }
 
 const LEVELS = ["Junior", "Mid", "Senior"] as const;
@@ -40,7 +40,7 @@ const InterviewGenerator = ({
   const [jdText, setJdText] = useState("");
   const [error, setError] = useState("");
 
-  // Form fields (used in both form mode and preview step)
+
   const [role, setRole] = useState("");
   const [level, setLevel] = useState<string>("Junior");
   const [techstack, setTechstack] = useState("");
@@ -64,7 +64,7 @@ const InterviewGenerator = ({
     setError("");
   };
 
-  // Extract fields from JD text
+
   const handleExtract = async (text: string) => {
     if (!text.trim()) {
       setError("Please enter a job description.");
@@ -89,7 +89,7 @@ const InterviewGenerator = ({
     }
   };
 
-  // Handle PDF file upload
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -113,20 +113,15 @@ const InterviewGenerator = ({
         setJdText(text);
         await handleExtract(text);
       } else {
-        // For PDFs, read the content as text and send to extraction
-        // Using FileReader to read as text (works for text-based PDFs)
         const text = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => {
-            // For PDFs we send the raw text content
-            // In production, you'd use pdf-parse or Gemini multimodal
             resolve(reader.result as string);
           };
           reader.onerror = reject;
           reader.readAsText(file);
         });
 
-        // Even if PDF text extraction is imperfect, Gemini can handle messy text
         setJdText(text);
         await handleExtract(text);
       }
@@ -136,13 +131,12 @@ const InterviewGenerator = ({
       setIsExtracting(false);
     }
 
-    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
-  // Generate interview from the form fields
+
   const handleGenerate = async () => {
     if (!role.trim()) {
       setError("Please enter a job role.");
@@ -188,7 +182,7 @@ const InterviewGenerator = ({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Tab selector */}
+
       <div className="flex gap-1 p-1 bg-slate-100 rounded-lg w-fit mx-auto">
         {tabs.map((tab) => (
           <button
@@ -207,19 +201,19 @@ const InterviewGenerator = ({
         ))}
       </div>
 
-      {/* Error display */}
+
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700 animate-fadeIn">
           {error}
         </div>
       )}
 
-      {/* Voice mode — render the existing Agent */}
+
       {mode === "voice" && (
         <div className="animate-fadeIn">{children}</div>
       )}
 
-      {/* Form mode — direct field entry */}
+
       {mode === "form" && (
         <div className="animate-fadeIn">
           <Card className="p-6 border-slate-200">
@@ -263,7 +257,7 @@ const InterviewGenerator = ({
         </div>
       )}
 
-      {/* JD Paste mode */}
+
       {mode === "jd" && step === "input" && (
         <div className="animate-fadeIn">
           <Card className="p-6 border-slate-200">
@@ -302,7 +296,7 @@ const InterviewGenerator = ({
         </div>
       )}
 
-      {/* PDF Upload mode */}
+
       {mode === "pdf" && step === "input" && (
         <div className="animate-fadeIn">
           <Card className="p-6 border-slate-200">
@@ -359,7 +353,7 @@ const InterviewGenerator = ({
         </div>
       )}
 
-      {/* Preview & Edit step (for JD and PDF modes) */}
+
       {(mode === "jd" || mode === "pdf") && step === "preview" && (
         <div className="animate-fadeIn">
           <Card className="p-6 border-slate-200">
@@ -424,7 +418,7 @@ const InterviewGenerator = ({
   );
 };
 
-// ─── Shared Form Fields Component ──────────────────────────────
+
 
 interface FormFieldsProps {
   role: string;
@@ -452,7 +446,7 @@ const FormFields = ({
   setAmount,
 }: FormFieldsProps) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {/* Role */}
+
     <div className="space-y-2 sm:col-span-2">
       <Label className="text-text-secondary font-medium text-sm">
         Job Role
@@ -465,7 +459,7 @@ const FormFields = ({
       />
     </div>
 
-    {/* Level */}
+
     <div className="space-y-2">
       <Label className="text-text-secondary font-medium text-sm">
         Experience Level
@@ -488,7 +482,7 @@ const FormFields = ({
       </div>
     </div>
 
-    {/* Type */}
+
     <div className="space-y-2">
       <Label className="text-text-secondary font-medium text-sm">
         Interview Type
@@ -511,7 +505,7 @@ const FormFields = ({
       </div>
     </div>
 
-    {/* Tech Stack */}
+
     <div className="space-y-2 sm:col-span-2">
       <Label className="text-text-secondary font-medium text-sm">
         Tech Stack
@@ -525,7 +519,7 @@ const FormFields = ({
       <p className="text-xs text-text-muted">Separate technologies with commas</p>
     </div>
 
-    {/* Number of Questions */}
+
     <div className="space-y-2 sm:col-span-2">
       <Label className="text-text-secondary font-medium text-sm">
         Number of Questions
@@ -550,7 +544,7 @@ const FormFields = ({
   </div>
 );
 
-// ─── Loading Spinner ───────────────────────────────────────────
+
 
 const LoadingSpinner = ({ size = "sm" }: { size?: "sm" | "lg" }) => (
   <svg

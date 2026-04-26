@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import Link from "next/link";
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -14,36 +14,32 @@ import DisplayTechIcons from "./DisplayTechIcons";
 import { cn } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
 
-// Warm Autumn Glow palette for card headers
-// Bronze Spice #CC5803 | Autumn Leaf #E2711D | Deep Saffron #FF9505
-// Amber Flame #FFB627 | Sunflower Gold #FFC971
 const CARD_GRADIENTS = [
-  "bg-linear-to-br from-[#CC5803] to-[#E2711D]",   // Bronze → Autumn
-  "bg-linear-to-br from-[#E2711D] to-[#FF9505]",   // Autumn → Saffron
-  "bg-linear-to-br from-[#FF9505] to-[#FFB627]",   // Saffron → Amber
-  "bg-linear-to-br from-[#FFB627] to-[#FFC971]",   // Amber → Gold
-  "bg-linear-to-br from-[#CC5803] to-[#FF9505]",   // Bronze → Saffron
-  "bg-linear-to-br from-[#E2711D] to-[#FFB627]",   // Autumn → Amber
-  "bg-linear-to-br from-[#CC5803] to-[#FFB627]",   // Bronze → Amber
-  "bg-linear-to-br from-[#E2711D] to-[#FFC971]",   // Autumn → Gold
+  "bg-linear-to-br from-[#CC5803] to-[#E2711D]",
+  "bg-linear-to-br from-[#E2711D] to-[#FF9505]",
+  "bg-linear-to-br from-[#FF9505] to-[#FFB627]",
+  "bg-linear-to-br from-[#FFB627] to-[#FFC971]",
+  "bg-linear-to-br from-[#CC5803] to-[#FF9505]",
+  "bg-linear-to-br from-[#E2711D] to-[#FFB627]",
+  "bg-linear-to-br from-[#CC5803] to-[#FFB627]",
+  "bg-linear-to-br from-[#E2711D] to-[#FFC971]",
 ] as const;
 
 const getRoleGradient = (role: string) => {
-  const roleLower = role.toLowerCase();
+  const r = role.toLowerCase();
+  if (r.includes("front"))   return CARD_GRADIENTS[0];
+  if (r.includes("back"))    return CARD_GRADIENTS[1];
+  if (r.includes("full"))    return CARD_GRADIENTS[2];
+  if (r.includes("devops"))  return CARD_GRADIENTS[3];
+  if (r.includes("data"))    return CARD_GRADIENTS[4];
+  if (r.includes("machine") || r.includes("ml") || r.includes("ai"))
+    return CARD_GRADIENTS[5];
+  if (r.includes("design") || r.includes("ui") || r.includes("ux"))
+    return CARD_GRADIENTS[6];
+  if (r.includes("mobile") || r.includes("android") || r.includes("ios"))
+    return CARD_GRADIENTS[7];
 
-  if (roleLower.includes("front"))     return CARD_GRADIENTS[0]; // Bronze → Autumn
-  if (roleLower.includes("back"))      return CARD_GRADIENTS[1]; // Autumn → Saffron
-  if (roleLower.includes("full"))      return CARD_GRADIENTS[2]; // Saffron → Amber
-  if (roleLower.includes("devops"))    return CARD_GRADIENTS[3]; // Amber → Gold
-  if (roleLower.includes("data"))      return CARD_GRADIENTS[4]; // Bronze → Saffron
-  if (roleLower.includes("machine") || roleLower.includes("ml") || roleLower.includes("ai"))
-    return CARD_GRADIENTS[5]; // Autumn → Amber
-  if (roleLower.includes("design") || roleLower.includes("ui") || roleLower.includes("ux"))
-    return CARD_GRADIENTS[6]; // Bronze → Amber
-  if (roleLower.includes("mobile") || roleLower.includes("android") || roleLower.includes("ios"))
-    return CARD_GRADIENTS[7]; // Autumn → Gold
 
-  // Deterministic hash fallback
   let hash = 0;
   for (let i = 0; i < role.length; i++) {
     hash = role.charCodeAt(i) + ((hash << 5) - hash);
@@ -84,61 +80,98 @@ const InterviewCard = async ({
 
   const scoreColor = score
     ? score >= 80
-      ? "score-excellent"
+      ? "text-emerald-600"
       : score >= 60
-        ? "score-good font-semibold"
+        ? "text-sky-600"
         : score >= 40
-          ? "score-average"
-          : "score-poor"
+          ? "text-amber-600"
+          : "text-red-500"
     : "";
 
+
+  const scorePercent = score ? Math.min(score, 100) : 0;
+  const scoreBarColor = score
+    ? score >= 80
+      ? "bg-emerald-500"
+      : score >= 60
+        ? "bg-sky-500"
+        : score >= 40
+          ? "bg-amber-500"
+          : "bg-red-500"
+    : "bg-slate-200";
+
   return (
-    <Card className="flex flex-col h-full border-slate-200 hover:shadow-lg transition-all group overflow-hidden">
-      <div className={cn("h-28 w-full transition-transform group-hover:scale-105 duration-500 flex items-center justify-center overflow-hidden relative px-4", getRoleGradient(role))}>
+    <Card className="flex flex-col h-full overflow-hidden rounded-xl border-[#e5e7eb] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.07)] hover:border-[#d1d5db] transition-all duration-200 group bg-white">
+
+      <div className={cn("h-28 w-full transition-transform group-hover:scale-[1.02] duration-500 flex items-center justify-center overflow-hidden relative px-4", getRoleGradient(role))}>
         <div className="absolute inset-0 bg-black/5" />
         <span className="text-white/20 text-4xl font-black uppercase tracking-tighter select-none truncate text-center w-full">
           {role}
         </span>
       </div>
 
-      <CardHeader className="p-5 pb-0">
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-xl capitalize leading-tight group-hover:text-primary transition-colors">
+      <CardHeader className="px-5 pt-5 pb-0">
+        <div className="flex items-start justify-between gap-3">
+          <CardTitle className="text-base font-semibold capitalize leading-snug text-text-primary group-hover:text-[#4f46e5] transition-colors">
             {role}
           </CardTitle>
-          <Badge variant="outline" className={cn("text-[10px] uppercase font-bold shrink-0 border-slate-200", badgeClass)}>
+          <Badge
+            variant="outline"
+            className={cn(
+              "text-[10px] uppercase font-semibold shrink-0 tracking-wide rounded-md px-2 py-0.5",
+              badgeClass
+            )}
+          >
             {normalizedType}
           </Badge>
         </div>
-        <CardDescription className="text-xs font-medium text-text-muted mt-1 uppercase tracking-wider">
+        <CardDescription className="text-xs text-text-muted mt-1.5">
           {formattedDate}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="p-5 flex-1 flex flex-col justify-end gap-6">
+      <CardContent className="px-5 pt-4 pb-0 flex-1 flex flex-col justify-end gap-4">
+
         <div className="flex items-center justify-between">
           <DisplayTechIcons techStack={techstack} />
+        </div>
 
-          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-            {score ? (
-              <span className={cn("text-lg font-bold leading-none", scoreColor)}>
-                {score}
-                <span className="text-xs font-medium text-text-muted ml-0.5">/100</span>
-              </span>
-            ) : (
-              <span className="text-xs font-semibold text-text-muted uppercase tracking-tight">Not taken</span>
-            )}
-          </div>
+
+        <div className="space-y-2">
+          {score ? (
+            <>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-text-muted">Score</span>
+                <span className={cn("text-sm font-bold", scoreColor)}>
+                  {score}
+                  <span className="text-text-muted font-normal">/100</span>
+                </span>
+              </div>
+              <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                <div
+                  className={cn("h-full rounded-full transition-all duration-500", scoreBarColor)}
+                  style={{ width: `${scorePercent}%` }}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+              <span className="text-xs text-text-muted">Not taken yet</span>
+            </div>
+          )}
         </div>
       </CardContent>
 
-      <CardFooter className="p-5 pt-0">
+      <CardFooter className="px-5 pt-4 pb-5">
         <Button
           asChild
           variant={feedback ? "outline" : "default"}
           className={cn(
-            "w-full h-11 font-bold text-sm transition-all",
-            !feedback && "bg-primary text-white hover:bg-primary-dark shadow-orange-100"
+            "w-full h-10 font-semibold text-sm rounded-lg transition-all",
+            feedback
+              ? "border-[#e5e7eb] hover:bg-slate-50 text-text-primary"
+              : "bg-primary text-white hover:bg-primary-dark"
           )}
         >
           <Link
@@ -148,7 +181,7 @@ const InterviewCard = async ({
                 : `/interview/${interviewId}`
             }
           >
-            {feedback ? "Review Analytics" : "Start Interview session"}
+            {feedback ? "Review Analytics" : "Start Interview"}
           </Link>
         </Button>
       </CardFooter>

@@ -11,13 +11,17 @@
   --color-primary-50: #fff7ed;
   --color-primary-100: #ffedd5;
 
+  --color-accent: #4f46e5;
+  --color-accent-light: #818cf8;
+  --color-accent-50: #eef2ff;
+
   --color-text-primary: #0f172a;
-  --color-text-secondary: #1e293b;
+  --color-text-secondary: #334155;
   --color-text-muted: #94a3b8;
 
   --color-bg: #f8fafc;
   --color-card: #ffffff;
-  --color-border: #e2e8f0;
+  --color-border: #e5e7eb;
   --color-border-light: #f1f5f9;
 
   --color-success: #16a34a;
@@ -31,7 +35,7 @@
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.75rem;
   --background: #f8fafc;
   --foreground: #0f172a;
   --card: #ffffff;
@@ -47,8 +51,8 @@
   --accent: #f1f5f9;
   --accent-foreground: #0f172a;
   --destructive: #dc2626;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
   --ring: #f97316;
   --chart-1: #f97316;
   --chart-2: #fb923c;
@@ -61,7 +65,7 @@
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f1f5f9;
   --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
+  --sidebar-border: #e5e7eb;
   --sidebar-ring: #f97316;
 }
 
@@ -109,7 +113,7 @@
   }
 
   body {
-    @apply bg-bg text-text-primary;
+    @apply bg-bg text-text-primary antialiased;
     color-scheme: light;
   }
 
@@ -122,11 +126,11 @@
   }
 
   h3 {
-    @apply text-xl font-semibold text-text-primary;
+    @apply text-lg font-semibold text-text-primary;
   }
 
   p {
-    @apply text-text-primary leading-relaxed;
+    @apply text-text-secondary leading-relaxed;
   }
 
   ul {
@@ -144,15 +148,15 @@
   }
 
   .root-layout {
-    @apply flex mx-auto max-w-7xl flex-col gap-8 my-8 px-6 max-sm:px-4;
+    @apply flex mx-auto max-w-7xl flex-col gap-10 my-10 px-6 max-sm:px-4;
   }
 
   .card-clean {
-    @apply bg-white rounded-lg border border-slate-200 p-6 shadow-sm;
+    @apply bg-white rounded-xl border border-[#e5e7eb] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)];
   }
 
   .card-hover {
-    @apply bg-white rounded-lg border border-slate-200 p-6 shadow-sm transition-all hover:shadow-md hover:border-slate-300 min-h-[220px];
+    @apply bg-white rounded-xl border border-[#e5e7eb] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:border-[#d1d5db] min-h-[220px];
   }
 
   .form {
@@ -163,7 +167,7 @@
     }
 
     .input {
-      @apply !bg-white !rounded-lg !min-h-11 !px-4 !border !border-border placeholder:!text-text-muted focus:!ring-2 focus:!ring-primary/20 focus:!border-primary;
+      @apply !bg-white !rounded-lg !min-h-11 !px-4 !border !border-[#e5e7eb] placeholder:!text-text-muted focus:!ring-2 focus:!ring-primary/20 focus:!border-primary;
     }
 
     .btn {
@@ -176,7 +180,7 @@
   }
 
   .btn-secondary {
-    @apply bg-white text-text-primary border border-border hover:bg-secondary rounded-lg font-semibold px-5 py-2.5 cursor-pointer transition-colors text-sm;
+    @apply bg-white text-text-primary border border-[#e5e7eb] hover:bg-slate-50 rounded-lg font-semibold px-5 py-2.5 cursor-pointer transition-colors text-sm;
   }
 
   .btn-call {
@@ -195,13 +199,13 @@
     }
 
     .card-interviewer {
-      @apply flex flex-col items-center justify-center gap-3 p-6 h-[360px] rounded-lg border border-orange-200 flex-1 sm:basis-1/2 w-full;
-      background-color: #fff7ed !important;
+      @apply flex flex-col items-center justify-center gap-3 p-6 h-[360px] rounded-xl border border-[#e5e7eb] flex-1 sm:basis-1/2 w-full;
+      background-color: #fafafa !important;
     }
  
     .avatar {
       @apply z-10 flex items-center justify-center rounded-full size-[120px] relative;
-      background-color: #ffedd5 !important;
+      background-color: #f1f5f9 !important;
  
       .animate-speak {
         @apply absolute inline-flex size-5/6 animate-ping rounded-full bg-primary/30 opacity-75;
@@ -209,12 +213,12 @@
     }
  
     .card-border {
-      @apply rounded-lg flex-1 sm:basis-1/2 w-full h-[360px] max-md:hidden border border-slate-200;
+      @apply rounded-xl flex-1 sm:basis-1/2 w-full h-[360px] max-md:hidden border border-[#e5e7eb];
       background-color: #ffffff !important;
     }
 
     .card-content {
-      @apply flex flex-col gap-3 justify-center items-center p-6 rounded-lg min-h-full;
+      @apply flex flex-col gap-3 justify-center items-center p-6 rounded-xl min-h-full;
       background-color: #ffffff !important;
     }
   }
@@ -223,7 +227,7 @@
     @apply w-full;
 
     .transcript {
-      @apply border border-slate-200 rounded-lg min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply border border-[#e5e7eb] rounded-xl min-h-12 px-5 py-3 flex items-center justify-center;
       background-color: #ffffff !important;
 
       p {
@@ -242,7 +246,7 @@
   }
 
   .interviews-section {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full;
   }
 
   .tech-tooltip {
@@ -250,23 +254,23 @@
   }
 
   .badge-behavioral {
-    @apply bg-orange-50 text-orange-700 border-orange-200;
+    @apply bg-sky-50 text-sky-700 border-sky-200;
   }
 
   .badge-technical {
-    @apply bg-purple-50 text-purple-700 border-purple-200;
+    @apply bg-indigo-50 text-indigo-700 border-indigo-200;
   }
 
   .badge-mixed {
-    @apply bg-amber-50 text-amber-700 border-amber-200;
+    @apply bg-violet-50 text-violet-700 border-violet-200;
   }
 
   .score-excellent {
-    @apply text-green-600;
+    @apply text-emerald-600;
   }
 
   .score-good {
-    @apply text-orange-600;
+    @apply text-sky-600;
   }
 
   .score-average {
@@ -274,7 +278,7 @@
   }
 
   .score-poor {
-    @apply text-red-600;
+    @apply text-red-500;
   }
 }
 
@@ -283,7 +287,7 @@
 }
 
 @utility animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {

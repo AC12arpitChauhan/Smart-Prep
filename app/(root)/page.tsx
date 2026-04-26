@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import InterviewCard from "@/components/InterviewCard";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
@@ -22,24 +20,43 @@ async function Home() {
 
   return (
     <>
-      <Card className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 border-slate-200 bg-linear-to-r from-white to-orange-50/30">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-black text-text-primary">
-            Welcome back{user?.name ? `, ${user.name}` : ""}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-2">
+        <div className="space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Welcome back
+            {user?.name ? (
+              <span className="text-primary">{`, ${user.name}`}</span>
+            ) : (
+              ""
+            )}
           </h1>
-          <p className="text-text-secondary text-base font-medium max-w-md">
-            Your intelligent command center for mastering role-specific mock interviews.
+          <p className="text-sm text-text-muted max-w-md">
+            Your command center for role-specific mock interviews.
           </p>
         </div>
-        <Button asChild size="lg" className="rounded-full shadow-lg shadow-orange-100 font-bold px-8 h-12 text-base transition-all hover:scale-105 active:scale-95">
-          <Link href="/interview">Ready to prep?</Link>
+
+        <Button
+          asChild
+          size="lg"
+          className="rounded-lg font-semibold px-6 h-11 text-sm shadow-none transition-all hover:opacity-90 active:scale-[0.98]"
+        >
+          <Link href="/interview">+ New Interview</Link>
         </Button>
-      </Card>
+      </div>
 
-      <Separator />
+      <div className="h-px bg-[#e5e7eb]" />
 
-      <section className="flex flex-col gap-4">
-        <h3>Your Interviews</h3>
+      <section className="flex flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-text-primary">
+            Your Interviews
+          </h3>
+          {hasPastInterviews && (
+            <span className="text-xs text-text-muted font-medium">
+              {userInterviews?.length} total
+            </span>
+          )}
+        </div>
 
         <div className="interviews-section">
           {hasPastInterviews ? (
@@ -55,17 +72,29 @@ async function Home() {
               />
             ))
           ) : (
-            <div className="card-clean text-center py-12 col-span-full">
-              <p className="text-text-muted">
-                You haven&apos;t taken any interviews yet. Start one above!
+            <div className="card-clean text-center py-16 col-span-full">
+              <p className="text-text-muted text-sm">
+                You haven&apos;t taken any interviews yet.
               </p>
+              <Button asChild variant="outline" className="mt-4 rounded-lg text-sm">
+                <Link href="/interview">Create your first</Link>
+              </Button>
             </div>
           )}
         </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h3>Available Interviews</h3>
+      <section className="flex flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-text-primary">
+            Available Interviews
+          </h3>
+          {hasUpcomingInterviews && (
+            <span className="text-xs text-text-muted font-medium">
+              {allInterview?.length} available
+            </span>
+          )}
+        </div>
 
         <div className="interviews-section">
           {hasUpcomingInterviews ? (
@@ -81,8 +110,8 @@ async function Home() {
               />
             ))
           ) : (
-            <div className="card-clean text-center py-12 col-span-full">
-              <p className="text-text-muted">
+            <div className="card-clean text-center py-16 col-span-full">
+              <p className="text-text-muted text-sm">
                 No interviews available at the moment.
               </p>
             </div>
